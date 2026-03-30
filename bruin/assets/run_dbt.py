@@ -19,13 +19,18 @@ logging.basicConfig(
 log = logging.getLogger(__name__)
 
 DBT_PROJECT_DIR = Path(__file__).parents[2] / "epl_dbt"
+DBT_PROFILES_DIR = Path("/home/nikhilporwal/.dbt")
 
 
 def run_dbt():
     log.info(f"Running dbt from {DBT_PROJECT_DIR}")
 
     result = subprocess.run(
-        ["dbt", "run", "--project-dir", str(DBT_PROJECT_DIR)],
+        [
+            "dbt", "run",
+            "--project-dir", str(DBT_PROJECT_DIR),
+            "--profiles-dir", str(DBT_PROFILES_DIR),
+        ],
         capture_output=True,
         text=True,
     )
@@ -42,7 +47,11 @@ def run_dbt_tests():
     log.info("Running dbt tests...")
 
     result = subprocess.run(
-        ["dbt", "test", "--project-dir", str(DBT_PROJECT_DIR)],
+        [
+            "dbt", "test",
+            "--project-dir", str(DBT_PROJECT_DIR),
+            "--profiles-dir", str(DBT_PROFILES_DIR),
+        ],
         capture_output=True,
         text=True,
     )
