@@ -25,7 +25,7 @@ assets:
           - spark_transform
 
     # ── Stage 4: dbt transformations ──────────────────────────────────────
-    - name: dbt_staging
+    - name: run_dbt
       type: python
       path: assets/run_dbt.py
       description: "Runs dbt staging + intermediate + mart models"
