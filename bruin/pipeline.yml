@@ -1,0 +1,33 @@
+name: epl-analysis-pipeline
+start_date: "2024-01-01"
+
+assets:
+    # ── Stage 1: Validate & profile raw Kaggle CSV ─────────────────────────
+    - name: ingest_kaggle
+      type: python
+      path: assets/ingest_kaggle.py
+      description: "Validates raw Kaggle EPL CSV — checks columns, seasons, nulls"
+
+    # ── Stage 2: PySpark transform → Parquet ──────────────────────────────
+    - name: spark_transform
+      type: python
+      path: assets/spark_transform.py
+      description: "Flattens, cleans and enriches raw CSV → Parquet in data/staging/"
+      depends_on:
+          - ingest_kaggle
+
+    # ── Stage 3: Load Parquet → Snowflake RAW schema ──────────────────────
+    - name: load_snowflake
+      type: python
+      path: assets/load_snowflake.py
+      description: "Loads Parquet files into Snowflake EPL_DB.RAW.matches"
+      depends_on:
+          - spark_transform
+
+    # ── Stage 4: dbt transformations ──────────────────────────────────────
+    - name: dbt_staging
+      type: python
+      path: assets/run_dbt.py
+      description: "Runs dbt staging + intermediate + mart models"
+      depends_on:
+          - load_snowflake

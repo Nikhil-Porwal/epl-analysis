@@ -1,0 +1,26 @@
+version: 2
+ 
+sources:
+  - name: epl_raw
+    database: EPL_DB
+    schema: RAW
+    tables:
+      - name: matches
+        description: "Raw EPL match data loaded from Kaggle dataset via PySpark"
+        columns:
+          - name: SEASON
+            description: "Season in format YYYY/YY e.g. 2015/16"
+          - name: MATCH_DATE
+            description: "Date of the match"
+          - name: HOME_TEAM
+            description: "Home team name"
+          - name: AWAY_TEAM
+            description: "Away team name"
+          - name: HOME_GOALS
+            description: "Full time home goals"
+          - name: AWAY_GOALS
+            description: "Full time away goals"
+          - name: TOTAL_GOALS
+            description: "Total goals in match"
+          - name: RESULT
+            description: "H = Home win, A = Away win, D = Draw"

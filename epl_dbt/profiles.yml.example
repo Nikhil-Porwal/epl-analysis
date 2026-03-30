@@ -1,0 +1,13 @@
+epl_dbt:
+  outputs:
+    dev:
+      type: snowflake
+      account: your_account_identifier      # e.g. ajjyiej-mn67574
+      user: YOUR_SNOWFLAKE_USERNAME
+      password: YOUR_SNOWFLAKE_PASSWORD
+      role: ACCOUNTADMIN
+      database: EPL_DB
+      warehouse: EPL_WH
+      schema: RAW
+      threads: 4
+  target: dev

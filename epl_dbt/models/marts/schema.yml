@@ -1,0 +1,29 @@
+version: 2
+
+models:
+  - name: fct_league_table
+    description: "Full league table with points, rank, win rate per season"
+    columns:
+      - name: team
+        tests:
+          - not_null
+      - name: season
+        tests:
+          - not_null
+      - name: points
+        tests:
+          - not_null
+      - name: season_rank
+        tests:
+          - not_null
+
+  - name: fct_match_kpi
+    description: "Season level match KPIs — goals, home/away advantage, trends"
+    columns:
+      - name: season
+        tests:
+          - not_null
+          - unique
+      - name: avg_goals_per_match
+        tests:
+          - not_null
