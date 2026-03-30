@@ -17,7 +17,8 @@ models:
         tests:
           - not_null
           - accepted_values:
-              values: ['H', 'A', 'D']
+              arguments:
+                values: ['H', 'A', 'D']
 
   - name: int_team_stats
     description: "Per team per season stats split by home/away"
