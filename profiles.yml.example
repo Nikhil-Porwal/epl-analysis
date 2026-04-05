@@ -1,0 +1,14 @@
+epl_dbt:
+  outputs:
+    dev:
+      account: <your snowflake account ID>
+      database: <DB_name>
+      password: <your snowflake account password>
+      role: ACCOUNTADMIN
+      schema: PUBLIC
+      threads: 4
+      type: snowflake
+      user: <Username>
+      warehouse: EPL_WH
+  target: dev
+#For example Account ID is xy12345 from xy12345.snowflakecomputing.com
