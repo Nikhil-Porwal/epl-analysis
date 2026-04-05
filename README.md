@@ -241,7 +241,6 @@ uv sync
 cp .env.example .env
 # Edit .env and fill in:
 #   SNOWFLAKE_ACCOUNT, SNOWFLAKE_USER, SNOWFLAKE_PASSWORD
-#   FOOTBALL_API_TOKEN (from football-data.org)
 ```
 
 ### Snowflake Setup
