@@ -51,63 +51,6 @@ Football analytics generates massive amounts of match data every season. This pr
 
 🔗 **[View Live Dashboard](https://lookerstudio.google.com/reporting/5dd1bf4b-4c23-4d38-a392-7f32a3cb27bb)**
 
-### Local dashboard export
-
-The Snowflake trial is no longer available and this project currently has no
-active cloud warehouse. The dashboard fact tables can therefore be built
-locally from the existing Parquet data and uploaded to Google Sheets:
-
-```bash
-uv run python scripts/export_fact_tables.py
-```
-
-This creates:
-
-```text
-data/facts/fct_league_table.csv
-data/facts/fct_match_kpi.csv
-```
-
-These CSVs are the dashboard serving layer for the current project version.
-The transformations still run locally, while Google Sheets provides a
-no-cost source for Looker Studio. Re-run the export whenever the source data
-changes and replace the contents of the corresponding Sheets tabs.
-
-#### Upload the fact tables to Google Sheets
-
-1. Open [Google Sheets](https://sheets.google.com) and create a blank
-   spreadsheet, for example `EPL Dashboard Data`.
-2. Rename the first tab to `fct_league_table`.
-3. Use **File → Import → Upload**, select
-   `data/facts/fct_league_table.csv`, choose **Replace data at selected cell**,
-   and import it into cell `A1`.
-4. Add a second tab named `fct_match_kpi`.
-5. Import `data/facts/fct_match_kpi.csv` into cell `A1` using the same option.
-6. Keep the first row as the header row and do not rename the columns. Looker
-   Studio uses these headers as field names.
-
-#### Connect the Sheets tabs to Looker Studio
-
-1. Open the report and choose **Resource → Manage added data sources → Add a
-   data source**.
-2. Select the **Google Sheets** connector.
-3. Select the spreadsheet and the `fct_league_table` worksheet. Enable
-   **Use first row as headers**, then click **Connect** and **Add to report**.
-4. Repeat the process for the `fct_match_kpi` worksheet.
-5. For existing charts, use **Resource → Manage added data sources** and
-   replace the old Snowflake source with the matching Google Sheets source.
-6. In each chart, verify that dimensions and metrics have the expected types:
-   `season` and `team` are text, ranks/counts are numbers, percentages are
-   numbers, and `top_4`/`relegated` are Boolean fields.
-7. Set the report data freshness to the default Sheets refresh interval. After
-   replacing a tab's contents, use **Resource → Manage added data sources →
-   Refresh fields** if Looker Studio does not immediately detect the update.
-
-This is intentionally a project/portfolio deployment rather than a
-production serving architecture. The limitation is documented here because
-the dashboard depends on manually refreshed Google Sheets data until a funded
-warehouse is available.
-
 The dashboard contains two pages:
 
 **Page 1 — League Table**
@@ -388,3 +331,60 @@ dbt tests defined in `schema.yml`:
 - **Home advantage** has been declining — home win % dropped from ~49% (2015/16) to ~41% (2024/25)
 - **Man City** accumulated the most points across the 10-season period
 - **2020/21** (COVID bubble season with no fans) showed the lowest home win % — validating that crowd support affects home advantage
+
+### Local dashboard export
+
+The Snowflake trial is no longer available and this project currently has no
+active cloud warehouse. The dashboard fact tables can therefore be built
+locally from the existing Parquet data and uploaded to Google Sheets:
+
+```bash
+uv run python scripts/export_fact_tables.py
+```
+
+This creates:
+
+```text
+data/facts/fct_league_table.csv
+data/facts/fct_match_kpi.csv
+```
+
+These CSVs are the dashboard serving layer for the current project version.
+The transformations still run locally, while Google Sheets provides a
+no-cost source for Looker Studio. Re-run the export whenever the source data
+changes and replace the contents of the corresponding Sheets tabs.
+
+#### Upload the fact tables to Google Sheets
+
+1. Open [Google Sheets](https://sheets.google.com) and create a blank
+   spreadsheet, for example `EPL Dashboard Data`.
+2. Rename the first tab to `fct_league_table`.
+3. Use **File → Import → Upload**, select
+   `data/facts/fct_league_table.csv`, choose **Replace data at selected cell**,
+   and import it into cell `A1`.
+4. Add a second tab named `fct_match_kpi`.
+5. Import `data/facts/fct_match_kpi.csv` into cell `A1` using the same option.
+6. Keep the first row as the header row and do not rename the columns. Looker
+   Studio uses these headers as field names.
+
+#### Connect the Sheets tabs to Looker Studio
+
+1. Open the report and choose **Resource → Manage added data sources → Add a
+   data source**.
+2. Select the **Google Sheets** connector.
+3. Select the spreadsheet and the `fct_league_table` worksheet. Enable
+   **Use first row as headers**, then click **Connect** and **Add to report**.
+4. Repeat the process for the `fct_match_kpi` worksheet.
+5. For existing charts, use **Resource → Manage added data sources** and
+   replace the old Snowflake source with the matching Google Sheets source.
+6. In each chart, verify that dimensions and metrics have the expected types:
+   `season` and `team` are text, ranks/counts are numbers, percentages are
+   numbers, and `top_4`/`relegated` are Boolean fields.
+7. Set the report data freshness to the default Sheets refresh interval. After
+   replacing a tab's contents, use **Resource → Manage added data sources →
+   Refresh fields** if Looker Studio does not immediately detect the update.
+
+This is intentionally a project/portfolio deployment rather than a
+production serving architecture. The limitation is documented here because
+the dashboard depends on manually refreshed Google Sheets data until a funded
+warehouse is available.
